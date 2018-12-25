@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>position</title>
+</head>
+<body>
+    <table id="stock_table" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th style="width: 10px">#</th>
+                <th style="width: 200px">Name</th>
+                <th style="width: 150px">Actions</th>
+              </tr>
+        </thead>
+        <tbody style="color: #555555;">      
+          <% positions.forEach(function(item){ %>              
+              <tr>
+              <td style="text-align: center;"> <a href="position/update?id=<%=item.positions_id%>"><%=item.position_id%></a></td>                  
+              <td><center><%=item.position_name%></center></td>
+              <td style="text-align: center;">
+                  <a href="position/update?id=<%=item.position_id%>"> Edit</a> | <a href="/position/delete?id=<%=item.position_id%>">Delete</a>| <a href="/position/add">Add</a>
+              </td>
+              </tr>
+              <%});%>
+                  
+        </tbody>
+        <tfoot>
+            <tr>
+                <th style="width: 10px">#</th>
+                <th style="width: 200px">Name</th>
+                <th style="width: 150px">Actions</th>
+              </tr>
+        </tfoot>
+      </table>
+</body>
+</html>

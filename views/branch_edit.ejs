@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Edit Product</title>
+</head>
+<body>
+    <div>
+        <h3><%=header%></h3>
+      </div>
+      <form role="form"  action="/branch/update/save" method="post">
+        <div>
+
+            <input type="hidden" class="form-control" name="id" value="<%=item.branch_id %>">
+            
+            <div class="form-group">
+                <label for="title">Name</label>
+                <input type="text" class="form-control" name="name" id="name" placeholder="Enter name" value="<%=item.branch_name%>">
+              </div>
+              <div class="form-group">
+                  <label for="description">Address</label>
+                  <input type="text" class="form-control" name="address" id="address" placeholder="Enter Address" value="<%= item.branch_address %>">
+              </div>
+            
+
+        <div class="box-footer">
+          <button type="submit">Submit</button>
+          <button type="button"  onClick="window.location.href='/branch/delete?id=<%= item.branch_id %>'" >Delete</button>
+        </div>
+      </form>
+</body>
+</html>
