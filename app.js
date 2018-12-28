@@ -2,10 +2,10 @@ const express = require('express'),
   path = require('path'),
   morgan = require('morgan'),
   mysql = require('mysql'),
-  myConnection = require('express-myconnection');
+  myConnection = require('express-myconnection'),
+  bodyPar =require('body-parser');
 
 const app = express();
-
 // importing routes
 const Routers = require('./routers/routers');
 
@@ -13,6 +13,8 @@ const Routers = require('./routers/routers');
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.use(bodyPar.json());
+//app.use(multer());
 
 // middlewares
 app.use(morgan('dev'));
