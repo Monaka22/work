@@ -1,5 +1,11 @@
 const controller = {};
-var formidable = require('formidable');
+const formidable = require('formidable');
+const path = require('path');
+const fs = require('fs');
+const express = require('express');
+const app = express();
+app.use(express.static(path.join(__dirname, '../public/file/')));
+
 controller.list = (req, res) => {
     req.getConnection((err, conn) => {
         conn.query('SELECT * FROM employee', (err, emp) => {
@@ -14,7 +20,7 @@ controller.list = (req, res) => {
 controller.listById = (req, res) => {
     id = req.params.id;
     req.getConnection((err, conn) => {
-        conn.query(`SELECT * FROM branch WHERE emp_id='${id}'`, (err, emp) => {
+        conn.query(`SELECT * FROM employee WHERE emp_id='${id}'`, (err, emp) => {
             if (err) {
                 res.json(err);
             }
@@ -23,45 +29,44 @@ controller.listById = (req, res) => {
     });
 };
 
-
 controller.save = (req, res) => {
     req.getConnection((err, conn) => {
         try {
-            var form = new formidable.IncomingForm();
-            var newname = Date.now();
+            const form = new formidable.IncomingForm();
+            const newname = Date.now();
             form.parse(req, function (err, fields, files) {
 
-                var oldpath = files.filetoupload.path;
-                var fileName = newname.toString() + "." + files.filetoupload.name.split('.').pop();
-                var newpath = path.join(__dirname, "../public/file/" + fileName);
+                const oldpath = files.filetoupload.path;
+                const fileName = newname.toString() + "." + files.filetoupload.name.split('.').pop();
+                const newpath = path.join(__dirname, "../public/file/" + fileName);
                 fs.rename(oldpath, newpath, function (err) {
                     if (err) throw err;
 
-                    var data = {
-                        name: req.body.name,
-                        salary: req.body.salary,
-                        address: req.body.address,
+                    const data = {
+                        name: fields.name,
+                        salary: fields.salary,
+                        address: fields.address,
                         id_card: fileName,
-                        tel: req.body.tel,
-                        eContact: req.body.eContact,
-                        branch_id: req.body.branch_id
+                        tel: fields.tel,
+                        eContact: fields.eContact,
+                        branch_id: fields.branch_id
                     }
-
-                    var sql = `INSERT INTO employee  VALUES ('${null}','${data.name}','${data.salary}','${data.address}','${data.id_card}','${data.tel}','${data.eContact}','${data.branch_id}')`;
+                    console.log(data);
+                    const sql = `INSERT INTO employee  VALUES ('${null}','${data.name}','${data.salary}','${data.address}','${data.id_card}','${data.tel}','${data.eContact}','${data.branch_id}')`;
                     conn.query(sql, function (err, result) {
-                        if (err) throw err;
                         console.log("1 record inserted");
                     });
 
-                    conn.query('SELECT * FROM employee', (err, emp) => {
+                    conn.query('SELECT * FROM employee', (err, branchs) => {
                         if (err) {
                             res.json(err);
                         }
-                        res.send(emp);
+                        res.send(branchs);
                     });
+
                 });
 
-           });
+            });
         } catch (err) {
             console.log("err : " + err);
             res.json(err);
@@ -71,24 +76,59 @@ controller.save = (req, res) => {
 
 controller.update = (req, res) => {
     req.getConnection((err, conn) => {
+        try {
 
-        const data = {
-            name: req.body.name,
-            address: req.body.address,
-            id: req.params.id
-        }
-        console.log("update: " + JSON.stringify(data))
-        sql = `UPDATE branch SET branch_name = '${data.name}',branch_address = '${data.address}' WHERE branch_id = '${data.id}'`;
-        conn.query(sql, function (err, result) {
-            if (err) throw err;
-            console.log(result.affectedRows + " record(s) updated");
-            conn.query('SELECT * FROM branch', (err, branchs) => {
-                if (err) {
-                    res.json(err);
+            const form = new formidable.IncomingForm();
+            form.parse(req, function (err, fields, files) {
+                const data = {
+                    id: req.params.id,
+                    name: fields.name,
+                    salary: fields.salary,
+                    address: fields.address,
+                    tel: fields.tel,
+                    eContact: fields.eContact,
+                    branch_id: fields.branch_id
                 }
-                res.send(branchs);
+                sql = `SELECT emp_id_card FROM employee WHERE emp_id = '${data.id}'`;
+                conn.query(sql, function (err, result) {
+                    if (err) throw err;
+                     const idcard = JSON.parse(JSON.stringify(result[0]));
+                    const id_card = idcard.emp_id_card;
+                    if (files.filetoupload.size != 0) {
+                        const oldpath = files.filetoupload.path;
+                        const newpath = path.join(__dirname, "../public/file/"+id_card);
+        
+                        fs.rename(oldpath, newpath, function (err) {
+                            if (err) throw err;
+                            console.log("Update file successfully");
+                        });
+                    }
+                  });
+            
+                console.log("update: " + JSON.stringify(data));
+                sql = `UPDATE employee SET emp_name= '${data.name}',
+                   emp_salary = '${data.salary}', 
+                   emp_address = '${data.address}', 
+                   emp_tel = '${data.tel}',
+                   emer_con = '${data.eContact}',
+                   emp_branch_id = '${data.branch_id}' where emp_id='${data.id}'`;
+    
+                   conn.query(sql, function (err, result) {
+                    if (err) throw err;
+                    console.log(result.affectedRows + " record(s) updated");
+                    conn.query('SELECT * FROM employee', (err, emp) => {
+                        if (err) {
+                            res.json(err);
+                        }
+                        res.send(emp);
+                    });
+                });
             });
-        });
+    
+    
+        } catch (err) {
+            throw err;
+        }
     });
 };
 
@@ -109,5 +149,6 @@ controller.delete = (req, res) => {
         });
     });
 }
+
 
 module.exports = controller;
