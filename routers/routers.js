@@ -1,6 +1,5 @@
 const router = require('express').Router();
-const bodyPar = require('body-parser');
-router.use(bodyPar.json());
+
 const branchController = require('../controllers/branchController');
 const positionController = require('../controllers/positionController');
 const empController = require('../controllers/empController');
@@ -13,6 +12,7 @@ const branchAdditController = require('../controllers/branchAdditController');
 const projectController = require('../controllers/projectController');
 const teamController = require('../controllers/teamController');
 const projectAdditController = require('../controllers/projectAdditController');
+
 
 router.get('/branch', branchController.list);
 router.get('/branch/:id', branchController.listById);

@@ -32,7 +32,7 @@ controller.save = (req, res) => {
             branch_id: req.body.branch_id,
             title: req.body.title,
             price: req.body.price,
-            date: req.body.data
+            date: req.body.date
         }
          //console.log(data);
         const sql = `INSERT INTO branch_addit  VALUES ('${null}','${data.branch_id}','${data.title}','${data.price}','${data.date}')`;
@@ -56,7 +56,7 @@ controller.update = (req, res) => {
             branch_id: req.body.branch_id,
             title: req.body.title,
             price: req.body.price,
-            date: req.body.data,
+            date: req.body.date,
             id: req.params.id
         }
         console.log("update: " + JSON.stringify(data))

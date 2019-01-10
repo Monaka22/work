@@ -48,7 +48,7 @@ controller.save = (req, res) => {
                         address: fields.address,
                         id_card: fileName,
                         tel: fields.tel,
-                        eContact: fields.eContact,
+                        eContact: fields.emer_con,
                         branch_id: fields.branch_id
                     }
                     console.log(data);
@@ -86,7 +86,7 @@ controller.update = (req, res) => {
                     salary: fields.salary,
                     address: fields.address,
                     tel: fields.tel,
-                    eContact: fields.eContact,
+                    eContact: fields.emer_con,
                     branch_id: fields.branch_id
                 }
                 sql = `SELECT emp_id_card FROM employee WHERE emp_id = '${data.id}'`;

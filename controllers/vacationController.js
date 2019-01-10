@@ -33,8 +33,8 @@ controller.save = (req, res) => {
             emp_id : req.body.emp_id,
             type : req.body.type,
             note : req.body.note,
-            fday : req.body.fday,
-            lday : req.body.lday
+            fday : req.body.fday_date,
+            lday : req.body.lday_date
         }
          //console.log(data);
         const sql = `INSERT INTO vacation  VALUES ('${null}','${data.note_date}','${data.emp_id}','${data.type}','${data.note}','${data.fday}','${data.lday}')`;
@@ -59,8 +59,8 @@ controller.update = (req, res) => {
             emp_id : req.body.emp_id,
             type : req.body.type,
             note : req.body.note,
-            fday : req.body.fday,
-            lday : req.body.lday,
+            fday : req.body.fday_date,
+            lday : req.body.lday_date,
             id : req.params.id
         }
         console.log("update: " + JSON.stringify(data))

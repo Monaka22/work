@@ -35,7 +35,7 @@ controller.save = (req, res) => {
             branch_id : req.body.branch_id
         }
          //console.log(data);
-        const sql = `INSERT INTO fixcost  VALUES ('${null}','${data.title}','${data.note}','${data.price}','${data.branch_id}')`;
+        const sql = `INSERT INTO fixcost  VALUES ('${null}','${data.title}','${data.price}','${data.note}','${data.branch_id}')`;
         conn.query(sql, function (err, result) {
             console.log("1 record inserted");
         });
@@ -60,7 +60,7 @@ controller.update = (req, res) => {
             id: req.params.id
         }
         console.log("update: " + JSON.stringify(data))
-        sql = `UPDATE fixcost SET fixcost_title = '${data.title}',fixcost_note = '${data.note}',fixcost_price = '${data.price}',branch_id = '${data.branch_id}' WHERE fixcost_id = '${data.id}'`;
+        sql = `UPDATE fixcost SET fixcost_title = '${data.title}',fixcost_price = '${data.price}',fixcost_note = '${data.note}',branch_id = '${data.branch_id}' WHERE fixcost_id = '${data.id}'`;
         conn.query(sql, function (err, result) {
             if (err) throw err;
             console.log(result.affectedRows + " record(s) updated");

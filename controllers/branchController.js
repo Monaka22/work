@@ -33,17 +33,17 @@ controller.save = (req, res) => {
             address: req.body.address
         }
          //console.log(data);
-         const sql = `INSERT INTO branch  VALUES ('${null}','${data.name}','${data.address}')`;
-         conn.query(sql, function (err, result) {
-             console.log("1 record inserted");
-         });
+        const sql = `INSERT INTO branch  VALUES ('${null}','${data.name}','${data.address}')`;
+        conn.query(sql, function (err, result) {
+            console.log("1 record inserted");
+        });
 
-         conn.query('SELECT * FROM branch', (err, branchs) => {
-             if (err) {
-                 res.json(err);
-             }
-             res.send(branchs);
-         });
+        conn.query('SELECT * FROM branch', (err, branchs) => {
+            if (err) {
+                res.json(err);
+            }
+            res.send(branchs);
+        });
     });
 };
 
