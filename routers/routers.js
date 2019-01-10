@@ -3,7 +3,7 @@ const bodyPar = require('body-parser');
 router.use(bodyPar.json());
 const branchController = require('../controllers/branchController');
 const positionController = require('../controllers/positionController');
-//const empController = require('../controllers/empController');
+const empController = require('../controllers/empController');
 const fixcostController = require('../controllers/fixcostController');
 const benefitController = require('../controllers/benefitController');
 const costDataController = require('../controllers/costDataController');
