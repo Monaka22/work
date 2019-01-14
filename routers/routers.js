@@ -84,13 +84,13 @@ router.post('/projectAddit', checkAuth, projectAdditController.save);
 router.put('/projectAddit/:id', checkAuth, projectAdditController.update);
 router.delete('/projectAddit/:id', checkAuth, projectAdditController.delete);
 router.get('/notfound',notfound.list);
-router.get('/login', function (req, res) {
+router.post('/login', function (req, res) {
 
-    const _username = req.query.username;
-    const _password = req.query.password;
+    const _username = req.body.username;
+    const _password = req.body.password;
 
-    if (req.query.username == "admin" && req.query.password == "qwerty") {
-        req.session.username = req.query.username;
+    if (req.body.username == "admin" && req.body.password == "qwerty") {
+        req.session.username = req.body.username;
         req.session.isLoggedIn = true;
         //router.use('/', Routers);
         res.end("Can use API.");
