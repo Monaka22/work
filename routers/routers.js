@@ -1,5 +1,5 @@
 const router = require('express').Router();
-
+const session = require('express-session');
 const branchController = require('../controllers/branchController');
 const positionController = require('../controllers/positionController');
 const empController = require('../controllers/empController');
@@ -12,69 +12,96 @@ const branchAdditController = require('../controllers/branchAdditController');
 const projectController = require('../controllers/projectController');
 const teamController = require('../controllers/teamController');
 const projectAdditController = require('../controllers/projectAdditController');
+const notfound = require('../controllers/404notfond');
+const checkAuth = require('../middleware/check_auth');
+router.use(session({
+    secret: 'HRproject',
+    cookie: {
+        maxAge: 3600000
+    },
+    resave: true,
+    saveUninitialized: false
+}));
 
+router.get('/branch', checkAuth, branchController.list);
+router.get('/branch/:id', checkAuth, branchController.listById);
+router.post('/branch', checkAuth, branchController.save);
+router.put('/branch/:id', checkAuth, branchController.update);
+router.delete('/branch/:id', checkAuth, branchController.delete);
+router.get('/position', checkAuth, positionController.list);
+router.get('/position/:id', checkAuth, positionController.listById);
+router.post('/position', checkAuth, positionController.save);
+router.put('/position/:id', checkAuth, positionController.update);
+router.delete('/position/:id', checkAuth, positionController.delete);
+router.get('/emp', checkAuth, empController.list);
+router.get('/emp/:id', checkAuth, empController.listById);
+router.post('/emp', checkAuth, empController.save);
+router.put('/emp/:id', checkAuth, empController.update);
+router.delete('/emp/:id', checkAuth, empController.delete);
+router.get('/fixcost', checkAuth, fixcostController.list);
+router.get('/fixcost/:id', checkAuth, fixcostController.listById);
+router.post('/fixcost', checkAuth, fixcostController.save);
+router.put('/fixcost/:id', checkAuth, fixcostController.update);
+router.delete('/fixcost/:id', checkAuth, fixcostController.delete);
+router.get('/benefit', checkAuth, benefitController.list);
+router.get('/benefit/:id', checkAuth, benefitController.listById);
+router.post('/benefit', checkAuth, benefitController.save);
+router.put('/benefit/:id', checkAuth, benefitController.update);
+router.delete('/benefit/:id', checkAuth, benefitController.delete);
+router.get('/costData', checkAuth, costDataController.list);
+router.get('/costData/:id', checkAuth, costDataController.listById);
+router.post('/costData', checkAuth, costDataController.save);
+router.put('/costData/:id', checkAuth, costDataController.update);
+router.delete('/costData/:id', checkAuth, costDataController.delete);
+router.get('/vacation', checkAuth, vacationController.list);
+router.get('/vacation/:id', checkAuth, vacationController.listById);
+router.post('/vacation', checkAuth, vacationController.save);
+router.put('/vacation/:id', checkAuth, vacationController.update);
+router.delete('/vacation/:id', checkAuth, vacationController.delete);
+router.get('/positionEmp', checkAuth, positionEmpController.list);
+router.get('/positionEmp/:id', checkAuth, positionEmpController.listById);
+router.post('/positionEmp', checkAuth, positionEmpController.save);
+router.put('/positionEmp/:id', checkAuth, positionEmpController.update);
+router.delete('/positionEmp/:id', checkAuth, positionEmpController.delete);
+router.get('/branchAddit', checkAuth, branchAdditController.list);
+router.get('/branchAddit/:id', checkAuth, branchAdditController.listById);
+router.post('/branchAddit', checkAuth, branchAdditController.save);
+router.put('/branchAddit/:id', checkAuth, branchAdditController.update);
+router.delete('/branchAddit/:id', checkAuth, branchAdditController.delete);
+router.get('/project', checkAuth, projectController.list);
+router.get('/project/:id', checkAuth, projectController.listById);
+router.post('/project', checkAuth, projectController.save);
+router.put('/project/:id', checkAuth, projectController.update);
+router.delete('/project/:id', checkAuth, projectController.delete);
+router.get('/team', checkAuth, teamController.list);
+router.get('/team/:id', checkAuth, teamController.listById);
+router.post('/team', checkAuth, teamController.save);
+router.put('/team/:id', checkAuth, teamController.update);
+router.delete('/team/:id', checkAuth, teamController.delete);
+router.get('/projectAddit', checkAuth, projectAdditController.list);
+router.get('/projectAddit/:id', checkAuth, projectAdditController.listById);
+router.post('/projectAddit', checkAuth, projectAdditController.save);
+router.put('/projectAddit/:id', checkAuth, projectAdditController.update);
+router.delete('/projectAddit/:id', checkAuth, projectAdditController.delete);
+router.get('/notfound',notfound.list);
+router.get('/login', function (req, res) {
 
-router.get('/branch', branchController.list);
-router.get('/branch/:id', branchController.listById);
-router.post('/branch', branchController.save);
-router.put('/branch/:id', branchController.update);
-router.delete('/branch/:id', branchController.delete);
-router.get('/position', positionController.list);
-router.get('/position/:id', positionController.listById);
-router.post('/position', positionController.save);
-router.put('/position/:id', positionController.update);
-router.delete('/position/:id', positionController.delete);
-router.get('/emp', empController.list);
-router.get('/emp/:id', empController.listById);
-router.post('/emp', empController.save);
-router.put('/emp/:id', empController.update);
-router.delete('/emp/:id', empController.delete);
-router.get('/fixcost', fixcostController.list);
-router.get('/fixcost/:id', fixcostController.listById);
-router.post('/fixcost', fixcostController.save);
-router.put('/fixcost/:id', fixcostController.update);
-router.delete('/fixcost/:id', fixcostController.delete);
-router.get('/benefit', benefitController.list);
-router.get('/benefit/:id', benefitController.listById);
-router.post('/benefit', benefitController.save);
-router.put('/benefit/:id', benefitController.update);
-router.delete('/benefit/:id', benefitController.delete);
-router.get('/costData', costDataController.list);
-router.get('/costData/:id', costDataController.listById);
-router.post('/costData', costDataController.save);
-router.put('/costData/:id', costDataController.update);
-router.delete('/costData/:id', costDataController.delete);
-router.get('/vacation', vacationController.list);
-router.get('/vacation/:id', vacationController.listById);
-router.post('/vacation', vacationController.save);
-router.put('/vacation/:id', vacationController.update);
-router.delete('/vacation/:id', vacationController.delete);
-router.get('/positionEmp', positionEmpController.list);
-router.get('/positionEmp/:id', positionEmpController.listById);
-router.post('/positionEmp', positionEmpController.save);
-router.put('/positionEmp/:id', positionEmpController.update);
-router.delete('/positionEmp/:id', positionEmpController.delete);
-router.get('/branchAddit', branchAdditController.list);
-router.get('/branchAddit/:id', branchAdditController.listById);
-router.post('/branchAddit', branchAdditController.save);
-router.put('/branchAddit/:id', branchAdditController.update);
-router.delete('/branchAddit/:id', branchAdditController.delete);
-router.get('/project', projectController.list);
-router.get('/project/:id', projectController.listById);
-router.post('/project', projectController.save);
-router.put('/project/:id', projectController.update);
-router.delete('/project/:id', projectController.delete);
-router.get('/team', teamController.list);
-router.get('/team/:id', teamController.listById);
-router.post('/team', teamController.save);
-router.put('/team/:id', teamController.update);
-router.delete('/team/:id', teamController.delete);
-router.get('/projectAddit', projectAdditController.list);
-router.get('/projectAddit/:id', projectAdditController.listById);
-router.post('/projectAddit', projectAdditController.save);
-router.put('/projectAddit/:id', projectAdditController.update);
-router.delete('/projectAddit/:id', projectAdditController.delete);
+    const _username = req.query.username;
+    const _password = req.query.password;
 
+    if (req.query.username == "admin" && req.query.password == "qwerty") {
+        req.session.username = req.query.username;
+        req.session.isLoggedIn = true;
+        //router.use('/', Routers);
+        res.end("Can use API.");
+    } else {
+        res.send("Invalid username and password");
+    }
+});
+router.get('/logout', function (req, res) {
+    req.session.destroy();
+    res.end("Logout complete")
+});
 
 
 module.exports = router;
