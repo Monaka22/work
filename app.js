@@ -1,5 +1,4 @@
 const express = require('express'),
-  path = require('path'),
   morgan = require('morgan'),
   mysql = require('mysql'),
   myConnection = require('express-myconnection');
@@ -8,7 +7,11 @@ const app = express();
 
 const Routers = require('./routers/routers');
 
-
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 app.use(morgan('dev'));
 app.use(myConnection(mysql, {
   host: '35.198.219.154',

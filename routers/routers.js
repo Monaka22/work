@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const session = require('express-session');
+
 const branchController = require('../controllers/branchController');
 const positionController = require('../controllers/positionController');
 const empController = require('../controllers/empController');
@@ -12,6 +13,7 @@ const branchAdditController = require('../controllers/branchAdditController');
 const projectController = require('../controllers/projectController');
 const teamController = require('../controllers/teamController');
 const projectAdditController = require('../controllers/projectAdditController');
+const userController = require('../controllers/userController');
 const notfound = require('../controllers/404notfond');
 const checkAuth = require('../middleware/check_auth');
 router.use(session({
@@ -83,17 +85,24 @@ router.get('/projectAddit/:id', checkAuth, projectAdditController.listById);
 router.post('/projectAddit', checkAuth, projectAdditController.save);
 router.put('/projectAddit/:id', checkAuth, projectAdditController.update);
 router.delete('/projectAddit/:id', checkAuth, projectAdditController.delete);
-router.get('/notfound',notfound.list);
-router.post('/login', function (req, res) {
+router.get('/user', checkAuth, userController.list);
+router.get('/user/:id', checkAuth, userController.listById);
+router.post('/user', checkAuth, userController.save);
+router.put('/user/:id', checkAuth, userController.update);
+router.delete('/user/:id', checkAuth, userController.delete);
 
-    const _username = req.body.username;
-    const _password = req.body.password;
+
+
+router.get('/notfound',notfound.list);
+
+
+
+router.post('/login', function (req, res) {
 
     if (req.body.username == "admin" && req.body.password == "qwerty") {
         req.session.username = req.body.username;
         req.session.isLoggedIn = true;
-        //router.use('/', Routers);
-        res.end("Can use API.");
+        res.end("Can use API. : " +req.session.username);
     } else {
         res.send("Invalid username and password");
     }
